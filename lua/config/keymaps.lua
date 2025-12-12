@@ -6,13 +6,19 @@ local function map(mode, lhs, rhs, opts)
 	vim.keymap.set(mode, lhs, rhs, options)
 end
 
--- 系统剪贴板
-map("v", "<C-x>", '"+x')
-map("v", "<C-c>", '"+y')
+vim.opt.mouse = ""
 
--- 自定义命令
-vim.api.nvim_create_user_command("CF", "r ~/template.cpp", {})
-vim.api.nvim_create_user_command("MAKE", "r ~/problem_maker.cpp", {})
+vim.g.clipboard = {
+  name = 'OSC52',
+  copy = {
+    ["+"] = require('vim.ui.clipboard.osc52').copy("+"),
+    ["*"] = require('vim.ui.clipboard.osc52').copy("*"),
+  },
+  paste = {
+    ["+"] = require('vim.ui.clipboard.osc52').paste("+"),
+    ["*"] = require('vim.ui.clipboard.osc52').paste("*"),
+  },
+}
 
 vim.keymap.set("n", "<Leader>q", ":CompetiTest run<CR>", { desc = "运行所有测试用例" })
 vim.keymap.set("n", "<Leader>add", ":CompetiTest add_testcase<CR>", { desc = "添加测试用例" })
